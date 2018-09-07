@@ -8,15 +8,6 @@
     }
 
     function onReady(smart)  {
-      
-      if (smart.hasOwnProperty('user')) {
-        smart.user.read().done(function(user) {
-          console.log(user);
-        });
-      } else {
-        console.log("no user information");
-      }
-      
       if (smart.hasOwnProperty('patient')) {
         var patient = smart.patient;
         var pt = patient.read();
@@ -136,5 +127,31 @@
     $('#ldl').html(p.ldl);
     $('#hdl').html(p.hdl);
   };
+
+})(window);
+
+(function(window){
+  window.extractUser = function() {
+    var ret = $.Deferred();
+
+    function onError() {
+      console.log('Loading error', arguments);
+      ret.reject();
+    }
+
+    function onReady(smart) {
+      smart.user.read().done(function(user) {
+        ret.resolve(user);
+      });
+      // TODO - Handle fail?
+    }
+
+    FHIR.oauth2.ready(onReady, onError);
+    return ret.promise();
+  };
+
+  extractUser().then(function success(user){
+    console.log(user);
+  });
 
 })(window);
