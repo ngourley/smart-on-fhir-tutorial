@@ -131,27 +131,29 @@
 })(window);
 
 (function(window){
-  window.extractUser = function() {
-    var ret = $.Deferred();
+  window.onload = function() {
+    window.extractUser = function() {
+      var ret = $.Deferred();
 
-    function onError() {
-      console.log('Loading error', arguments);
-      ret.reject();
-    }
+      function onError() {
+        console.log('Loading error', arguments);
+        ret.reject();
+      }
 
-    function onReady(smart) {
-      smart.user.read().done(function(user) {
-        ret.resolve(user);
-      });
-      // TODO - Handle fail?
-    }
+      function onReady(smart) {
+        smart.user.read().done(function(user) {
+          ret.resolve(user);
+        });
+        // TODO - Handle fail?
+      }
 
-    FHIR.oauth2.ready(onReady, onError);
-    return ret.promise();
-  };
+      FHIR.oauth2.ready(onReady, onError);
+      return ret.promise();
+    };
 
-  extractUser().then(function success(user){
-    console.log(user);
-  });
+    extractUser().then(function success(user){
+      console.log(user);
+    });
+  }
 
 })(window);
