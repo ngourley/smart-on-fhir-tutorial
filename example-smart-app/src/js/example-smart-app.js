@@ -8,6 +8,15 @@
     }
 
     function onReady(smart)  {
+      
+      if (smart.hasOwnProperty('user')) {
+        smart.user.read().done(function(user) {
+          console.log(user);
+        });
+      } else {
+        console.log("no user information");
+      }
+      
       if (smart.hasOwnProperty('patient')) {
         var patient = smart.patient;
         var pt = patient.read();
