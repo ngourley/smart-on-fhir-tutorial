@@ -143,8 +143,9 @@
       function onReady(smart) {
         smart.user.read().done(function(user) {
           ret.resolve(user);
+        }).fail(function(err) {
+          console.log(err);
         });
-        // TODO - Handle fail?
       }
 
       FHIR.oauth2.ready(onReady, onError);
